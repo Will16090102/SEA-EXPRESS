@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>SEA Express - Calculadora de Envíos</title>
+  <meta name="description" content="Cotiza tu envío USA-Perú fácil y rápido con SEA Express. Envíos seguros, soporte 24/7, experiencia garantizada.">
+  <meta name="theme-color" content="#BE1522">
+  <link rel="icon" type="image/png" href="https://github.com/Will16090102/SEADEMO1/blob/main/LOGOSEAE.png?raw=true">
+  <!-- Google Analytics -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-XL4N1HLKD9"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', 'G-XL4N1HLKD9');
+  </script>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+  {% block extra_head %}{% endblock %}
+</head>
+<body>
+  <a href="#main-content" class="skip-link">Saltar al contenido principal</a>
+  <div class="main-container">
+    <div class="logo-container">
+      <img src="https://github.com/Will16090102/SEADEMO1/blob/main/LOGOSEAE.png?raw=true" alt="SEA Express Logo" class="logo-img" tabindex="0">
+      <p class="logo-text">Envíos USA-PERÚ</p>
+    </div>
+    
+    {% block content %}{% endblock %}
+    
+    <div class="features-container">
+      <div class="features-section">
+        <div class="feature-card" tabindex="0">
+          <div class="feature-icon"><i class="fas fa-shield-alt"></i></div>
+          <h3 class="feature-title">Envíos Seguros</h3>
+          <p class="feature-text">Tu mercancía protegida durante todo el trayecto con seguimiento en tiempo real.</p>
+        </div>
+        
+        <div class="feature-card" tabindex="0">
+          <div class="feature-icon"><i class="fas fa-headset"></i></div>
+          <h3 class="feature-title">Soporte 24/7</h3>
+          <p class="feature-text">Estamos disponibles para ayudarte en cualquier momento para resolver tus dudas.</p>
+        </div>
+        
+        <div class="feature-card" tabindex="0">
+          <div class="feature-icon"><i class="fas fa-star"></i></div>
+          <h3 class="feature-title">Experiencia</h3>
+          <p class="feature-text">Más de 10 años de experiencia enviando mercancía desde USA a Perú.</p>
+        </div>
+      </div>
+    </div>
+    
+    <footer class="footer">
+      <div class="footer-content">
+        <p>&copy; 2023 SEA Express - Todos los derechos reservados</p>
+        <div class="social-links">
+          <a href="https://facebook.com/" aria-label="Facebook" target="_blank"><i class="fab fa-facebook"></i></a>
+          <a href="https://instagram.com/" aria-label="Instagram" target="_blank"><i class="fab fa-instagram"></i></a>
+          <a href="https://api.whatsapp.com/send?phone=51987654321" aria-label="WhatsApp" target="_blank"><i class="fab fa-whatsapp"></i></a>
+        </div>
+      </div>
+    </footer>
+  </div>
+  
+  {% block scripts %}{% endblock %}
+</body>
+</html>

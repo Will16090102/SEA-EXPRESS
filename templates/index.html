@@ -1,0 +1,326 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>SEA Express - Calculadora de Envíos</title>
+  <meta name="description" content="Cotiza tu envío USA-Perú fácil y rápido con SEA Express. Envíos seguros, soporte 24/7, experiencia garantizada.">
+  <meta name="theme-color" content="#BE1522">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/styles.css') }}">
+  <!-- Google Analytics (configurar con ID real) -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-XL4N1HLKD9"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', 'G-XL4N1HLKD9');
+  </script>
+</head>
+<body>
+  <a href="#calculator" class="skip-link">Ir al calculador</a>
+  
+  <div class="main-container">
+    <div class="calculator-wrapper">
+      <div class="logo-container">
+        <img src="https://github.com/Will16090102/SEADEMO1/blob/main/LOGOSEAE.png?raw=true" 
+             alt="SEA Express Logo" 
+             class="logo-img"
+             width="200" 
+             height="80">
+        <p class="logo-text">Elígelo y es tuyo</p>
+      </div>
+      
+      <div class="calc-flex" id="calculator">
+        <div class="tabs">
+          <button class="tab active" data-tab="manual">Manual</button>
+          <button class="tab" data-tab="amazon">Por Enlace</button>
+        </div>
+        
+        <div class="tab-content active" id="manual-tab">
+          <div class="form-section">
+            <div class="form-inner">
+              <form id="manual-calculator-form">
+                <div class="form-group">
+                  <div class="label-container">
+                    <label for="manual-price">Valor del producto (USD)</label>
+                    <span class="tooltip" title="Es el precio declarado del producto en dólares. Debe ser mayor o igual a $1.">
+                      <i class="fas fa-info-circle"></i>
+                    </span>
+                  </div>
+                  <input type="number" id="manual-price" name="price" step="0.01" min="1" placeholder="Ej: 120" required>
+                </div>
+                
+                <div class="form-group">
+                  <div class="label-container">
+                    <label for="manual-weight">Peso del paquete (kg)</label>
+                    <span class="tooltip" title="Peso total del paquete. Mínimo 0.1 kg, si es menor a 1 kg se redondea a 1 kg para el cálculo.">
+                      <i class="fas fa-info-circle"></i>
+                    </span>
+                  </div>
+                  <input type="number" id="manual-weight" name="weight" step="0.1" min="0.1" placeholder="Ej: 1.5" required>
+                </div>
+                
+                <div class="form-group">
+                  <div class="label-container">
+                    <label for="manual-product-type">Tipo de producto (opcional)</label>
+                    <span class="tooltip" title="Descripción breve del producto, no afecta el cálculo.">
+                      <i class="fas fa-info-circle"></i>
+                    </span>
+                  </div>
+                  <input type="text" id="manual-product-type" name="product_type" placeholder="Ej: Celular, ropa, etc.">
+                </div>
+                
+                <div class="form-group">
+                  <button type="submit" id="manual-calculate-btn">Calcular</button>
+                </div>
+                
+                <div id="manual-loading" style="display: none;">
+                  <div class="spinner"></div>
+                  <p>Procesando tu solicitud...</p>
+                </div>
+                
+                <div id="manual-error-message" class="error-message" style="display: none;"></div>
+              </form>
+            </div>
+          </div>
+          
+          <div class="result-section" id="result-manual">
+            <div class="result-title">Resumen de Cotización</div>
+            
+            <div class="result-item">
+              <span>Producto:</span>
+              <span id="manual-product-type-display">-</span>
+            </div>
+            
+            <div class="result-item">
+              <span>Valor del producto:</span>
+              <span id="manual-product-price">$0.00</span>
+            </div>
+            
+            <div class="result-item">
+              <span>Peso:</span>
+              <span id="manual-physical-weight">0.00 kg</span>
+            </div>
+            
+            <div class="result-item">
+              <span>Desaduanaje:</span>
+              <span id="manual-customs-fee">$0.00</span>
+            </div>
+            
+            <div class="result-item costo-envio">
+              <span>Costo de envío:</span>
+              <span id="manual-shipping-cost">$0.00</span>
+            </div>
+            
+            <div class="result-item">
+              <span>Impuestos:</span>
+              <span id="manual-import-tax">$0.00</span>
+            </div>
+            
+            <div class="total-envio-box">
+              <div class="total-envio-title">Total envío</div>
+              <div class="total-envio-value" id="manual-total-shipping">$0.00</div>
+            </div>
+            
+            <div class="result-item costo-total">
+              <span>Costo total:</span>
+              <span id="manual-total-cost">$0.00</span>
+            </div>
+            
+            <a href="#" class="whatsapp-btn" id="manual-whatsapp-btn" aria-label="Consultar por WhatsApp">
+              <div class="whatsapp-glow"></div>
+              <i class="fab fa-whatsapp"></i>
+              <span>¡Quiero mi descuento especial!</span>
+            </a>
+          </div>
+        </div>
+        
+        <div class="tab-content" id="amazon-tab">
+          <div class="form-section">
+            <div class="form-inner">
+              <form id="amazon-calculator-form">
+                <div class="form-group">
+                  <div class="label-container">
+                    <label for="amazon-url">Enlace del producto</label>
+                    <span class="tooltip" title="Pega el enlace completo del producto de Amazon u otra tienda">
+                      <i class="fas fa-info-circle"></i>
+                    </span>
+                  </div>
+                  <input type="url" id="amazon-url" name="amazon-url" placeholder="https://www.amazon.com/..." required>
+                  <small class="form-hint">Pega el enlace completo del producto</small>
+                </div>
+                
+                <div id="amazon-product-data" style="display: none;">
+                  <div class="form-group">
+                    <div class="label-container">
+                      <label for="amazon-price">Valor del producto (USD)</label>
+                    </div>
+                    <input type="number" id="amazon-price" name="price" step="0.01" min="1" readonly>
+                  </div>
+                  
+                  <div class="form-group">
+                    <div class="label-container">
+                      <label for="amazon-weight">Peso del paquete (kg)</label>
+                    </div>
+                    <input type="number" id="amazon-weight" name="weight" step="0.1" min="0.1" readonly>
+                  </div>
+                  
+                  <div class="form-group">
+                    <div class="label-container">
+                      <label for="amazon-product-type">Tipo de producto</label>
+                    </div>
+                    <input type="text" id="amazon-product-type" name="product_type" readonly>
+                  </div>
+                </div>
+                
+                <div class="form-group">
+                  <button type="button" id="fetch-amazon">Obtener datos del producto</button>
+                </div>
+                
+                <div class="form-group">
+                  <button type="submit" id="amazon-calculate-btn" disabled>Calcular</button>
+                </div>
+                
+                <div id="amazon-loading" style="display: none;">
+                  <div class="spinner"></div>
+                  <p>Procesando tu solicitud...</p>
+                </div>
+                
+                <div id="amazon-error-message" class="error-message" style="display: none;"></div>
+              </form>
+            </div>
+          </div>
+          
+          <div class="result-section" id="result-amazon">
+            <div class="result-title">Resumen de Cotización</div>
+            
+            <div class="result-item">
+              <span>Producto:</span>
+              <span class="product-name" id="product-name">-</span>
+            </div>
+            
+            <div class="result-item">
+              <span>Valor del producto:</span>
+              <span id="amazon-product-price-result">$0.00</span>
+            </div>
+            
+            <div class="result-item">
+              <span>Peso:</span>
+              <span id="amazon-physical-weight">0.00 kg</span>
+            </div>
+            
+            <div class="result-item">
+              <span>Desaduanaje:</span>
+              <span id="amazon-customs-fee">$0.00</span>
+            </div>
+            
+            <div class="result-item costo-envio">
+              <span>Costo de envío:</span>
+              <span id="amazon-shipping-cost">$0.00</span>
+            </div>
+            
+            <div class="result-item">
+              <span>Impuestos:</span>
+              <span id="amazon-import-tax">$0.00</span>
+            </div>
+            
+            <div class="total-envio-box">
+              <div class="total-envio-title">Total envío</div>
+              <div class="total-envio-value" id="amazon-total-shipping">$0.00</div>
+            </div>
+            
+            <div class="result-item costo-total">
+              <span>Costo total:</span>
+              <span id="amazon-total-cost">$0.00</span>
+            </div>
+            
+            <a href="#" class="whatsapp-btn" id="amazon-whatsapp-btn" aria-label="Consultar por WhatsApp">
+              <div class="whatsapp-glow"></div>
+              <i class="fab fa-whatsapp"></i>
+              <span>¡Quiero mi descuento especial!</span>
+            </a>
+          </div>
+        </div>
+      </div>
+    </div>
+    
+    <div class="features-container">
+      <div class="features-section">
+        <div class="feature-card" tabindex="0">
+          <div class="feature-icon">
+            <i class="fas fa-truck-fast"></i>
+          </div>
+          <h3 class="feature-title">Envío Express</h3>
+          <p class="feature-text">Entrega rápida en 7-10 días hábiles desde que recibimos tu paquete.</p>
+        </div>
+        
+        <div class="feature-card" tabindex="0">
+          <div class="feature-icon">
+            <i class="fas fa-shield-alt"></i>
+          </div>
+          <h3 class="feature-title">Envío Seguro</h3>
+          <p class="feature-text">Tus envíos siempre están seguros con nosotros.</p>
+        </div>
+        
+        <div class="feature-card" tabindex="0">
+          <div class="feature-icon">
+            <i class="fas fa-headset"></i>
+          </div>
+          <h3 class="feature-title">Soporte 24/7</h3>
+          <p class="feature-text">Nuestro equipo está disponible para resolver tus dudas en cualquier momento.</p>
+        </div>
+      </div>
+    </div>
+    
+    <footer class="footer">
+      <div class="footer-container">
+        <div class="footer-section">
+          <h3>SOMOS SEA EXPRESS</h3>
+          <p>Te conectamos con lo mejor de USA, para que compres lo que más te guste y recibas en Perú sin complicaciones. Nuestro servicio abre un mundo de oportunidades para tus compras y regalos.</p>
+        </div>
+        
+        <div class="footer-section">
+          <h3>SOPORTE</h3>
+          <ul>
+            <li><a href="#">Contacto</a></li>
+            <li><a href="#">Calcula tu envío</a></li>
+            <li><a href="#">Preguntas Frecuentes</a></li>
+            <li><a href="#">Tarifas</a></li>
+          </ul>
+          <p>VENTAS@SEAGROUPPERU.COM</p>
+        </div>
+        
+        <div class="footer-section">
+          <h3>ENVÍOS A NIVEL NACIONAL</h3>
+          <ul>
+            <li>Lima Metropolitana</li>
+            <li>Arequipa</li>
+            <li>Trujillo</li>
+            <li>Piura</li>
+            <li>Chiclayo</li>
+          </ul>
+        </div>
+        
+        <div class="footer-section">
+          <h3>CONTACTO</h3>
+          <p><i class="fab fa-whatsapp"></i> WhatsApp: 912 140 295</p>
+          <h4>OFICINA</h4>
+          <p>AV. LOS PATRIOTAS 431, SAN MIGUEL, LIMA</p>
+          <p>Estados Unidos:<br>
+          7270 NW 35th Terrace Suite 602<br>
+          Miami, Florida 33122<br>
+          Tel: 786-628-8807</p>
+        </div>
+      </div>
+      
+      <div class="social-links">
+        <a href="https://www.facebook.com/share/16H3U9w4aM/?mibextid=wwXIfr" target="_blank" aria-label="Facebook"><i class="fab fa-facebook-f"></i></a>
+        <a href="https://www.instagram.com/seaexpressperu?igsh=MWdlZWpjNmsxbGJ4cA==" target="_blank" aria-label="Instagram"><i class="fab fa-instagram"></i></a>
+      </div>
+    </footer>
+  </div>
+
+  <script src="{{ url_for('static', filename='js/calculator.js') }}"></script>
+</body>
+</html>
